@@ -1,25 +1,22 @@
-package ir.maktab.hw1.model;
+package ir.maktab.hw7.domain;
 
-public class Category {
+public class Tag {
     private int id;
     private String title;
-    private String description;
 
-    public Category() {
+    public Tag() {
     }
 
-    public Category(int id, String title, String description) {
+    public Tag(int id, String title) {
         this.id = id;
         this.title = title;
-        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "Tag{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -37,13 +34,5 @@ public class Category {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

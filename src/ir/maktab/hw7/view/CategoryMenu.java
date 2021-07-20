@@ -1,22 +1,21 @@
-package ir.maktab.hw1.view;
+package ir.maktab.hw7.view;
 
-import ir.maktab.hw1.controller.CategoryController;
-import ir.maktab.hw1.model.Category;
+import ir.maktab.hw7.repository.CategoryRepository;
+import ir.maktab.hw7.domain.Category;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CategoryMenu extends Menu {
 
     private static String[] getCategories() {
-        CategoryController categoryController = new CategoryController();
-        String[] categories = new String[categoryController.getAllCategories().size() + 1];
-        for (int i = 0; i < categoryController.getAllCategories().size(); i++) {
-            categories[i] = categoryController.getAllCategories().get(i).getTitle();
+        CategoryRepository categoryRepository = new CategoryRepository();
+        String[] categories = new String[categoryRepository.getAllCategories().size() + 1];
+        for (int i = 0; i < categoryRepository.getAllCategories().size(); i++) {
+            categories[i] = categoryRepository.getAllCategories().get(i).getTitle();
         }
-        categories[categoryController.getAllCategories().size()] = "Add new category";
+        categories[categoryRepository.getAllCategories().size()] = "Add new category";
         return categories;
     }
 
@@ -28,7 +27,7 @@ public class CategoryMenu extends Menu {
 
     public Category chooseCategory(Scanner scanner) {
         showMenu();
-        ArrayList<Category> categories = new CategoryController().getAllCategories();
+        ArrayList<Category> categories = new CategoryRepository().getAllCategories();
         System.out.println("Choose a category: ");
         String chosenItem = scanner.nextLine();
         if (Integer.parseInt(chosenItem) == getCategories().length) {
@@ -46,9 +45,9 @@ public class CategoryMenu extends Menu {
         category.setTitle(scanner.nextLine());
         System.out.println("Please enter description: ");
         category.setDescription(scanner.nextLine());
-        CategoryController categoryController = new CategoryController();
+        CategoryRepository categoryRepository = new CategoryRepository();
         try {
-            categoryController.addCategory(category);
+            categoryRepository.addCategory(category);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

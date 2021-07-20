@@ -1,4 +1,4 @@
-package ir.maktab.hw1.model;
+package ir.maktab.hw7.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

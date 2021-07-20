@@ -1,9 +1,11 @@
-package ir.maktab.hw1.view;
+package ir.maktab.hw7.view;
 
-import ir.maktab.hw1.model.Article;
-import ir.maktab.hw1.model.User;
-import ir.maktab.hw1.controller.ArticleController;
-import ir.maktab.hw1.controller.UserController;
+import ir.maktab.hw7.domain.Admin;
+import ir.maktab.hw7.repository.AdminRepository;
+import ir.maktab.hw7.repository.ArticleRepository;
+import ir.maktab.hw7.repository.UserRepository;
+import ir.maktab.hw7.domain.Article;
+import ir.maktab.hw7.domain.User;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +17,7 @@ public class MainMenu extends Menu {
                 "Login",
                 "Register",
                 "View Published Articles",
+                "Admin login",
                 "Exit"
         });
     }
@@ -35,6 +38,9 @@ public class MainMenu extends Menu {
                 run(scanner);
                 break;
             case "4":
+                adminLogin(scanner);
+                break;
+            case "5":
                 break;
             default:
                 System.out.println("Wrong!");
@@ -47,13 +53,13 @@ public class MainMenu extends Menu {
         String userName = scanner.nextLine();
         System.out.println("Please enter your Password: ");
         String passWord = scanner.nextLine();
-        UserController userController = new UserController();
-        User user = userController.getUser(userName, passWord);
+        UserRepository userRepository = new UserRepository();
+        User user = userRepository.getUser(userName, passWord);
         System.out.println(user);
-        if(user != null){
+        if (user != null) {
             UserMenu userMenu = new UserMenu();
             userMenu.run(scanner, user);
-        }else {
+        } else {
             System.out.println("Wrong!");
             login(scanner);
         }
@@ -72,20 +78,34 @@ public class MainMenu extends Menu {
         String str = scanner.nextLine();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         user.setBirthday(LocalDate.parse(str, dtf));
-        UserController userController = new UserController();
-        userController.addUser(user);
+        UserRepository userRepository = new UserRepository();
+        userRepository.addUser(user);
         System.out.println(user);
         System.out.println("Registered successfully!");
     }
 
     private void viewPublished() {
-        ArticleController articleController = new ArticleController();
+        ArticleRepository articleRepository = new ArticleRepository();
         for (Article article :
-                articleController.getPublishedArticles()) {
+                articleRepository.getPublishedArticles()) {
             System.out.println(article);
         }
     }
 
-
+    private void adminLogin(Scanner scanner) {
+        System.out.println("Please enter your Username: ");
+        String userName = scanner.nextLine();
+        System.out.println("Please enter your Password: ");
+        String password = scanner.nextLine();
+        AdminRepository adminRepository = new AdminRepository();
+        Admin admin = adminRepository.getAdmin(userName, password);
+        System.out.println("welcome " + admin.getUserName());
+        if (admin != null) {
+            new AdminMenu().run(scanner, admin);
+        } else {
+            System.out.println("Wrong!");
+            adminLogin(scanner);
+        }
+    }
 
 }

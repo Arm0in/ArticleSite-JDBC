@@ -1,4 +1,4 @@
-package ir.maktab.hw1.lib;
+package ir.maktab.hw7.lib;
 
 import java.util.Scanner;
 

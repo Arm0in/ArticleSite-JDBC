@@ -1,4 +1,4 @@
-package ir.maktab.hw1.controller;
+package ir.maktab.hw7.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

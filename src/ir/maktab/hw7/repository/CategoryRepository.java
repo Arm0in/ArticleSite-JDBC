@@ -1,6 +1,6 @@
-package ir.maktab.hw1.controller;
+package ir.maktab.hw7.repository;
 
-import ir.maktab.hw1.model.Category;
+import ir.maktab.hw7.domain.Category;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class CategoryController extends Controller {
+public class CategoryRepository implements BaseRepository {
 
     public ArrayList<Category> getAllCategories() {
         ArrayList<Category> categories = new ArrayList<Category>();

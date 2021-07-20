@@ -1,6 +1,6 @@
-package ir.maktab.hw1;
+package ir.maktab.hw7;
 
-import ir.maktab.hw1.view.MainMenu;
+import ir.maktab.hw7.view.MainMenu;
 
 import java.util.Scanner;
 
