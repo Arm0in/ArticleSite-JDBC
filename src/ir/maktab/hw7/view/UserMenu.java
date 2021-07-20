@@ -6,6 +6,7 @@ import ir.maktab.hw7.domain.Article;
 import ir.maktab.hw7.domain.Category;
 import ir.maktab.hw7.domain.User;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -44,9 +45,11 @@ public class UserMenu extends Menu {
                 break;
             case "6":
                 currentUser = null;
-                new MainMenu().run(scanner);
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.run(scanner);
+                return;
             default:
-                System.out.println("Wrong!");
+                System.out.println("Wrong! (user menu)");
                 run(scanner, currentUser);
         }
     }
@@ -69,6 +72,8 @@ public class UserMenu extends Menu {
         editedArticle.setBrief(scanner.nextLine());
         System.out.println("Please enter new content: ");
         editedArticle.setContent(scanner.nextLine());
+        System.out.println("Please set a price: ");
+        editedArticle.setPrice(new BigDecimal(scanner.nextLine()));
         new ArticleRepository().update(currentUser, articleId, editedArticle);
         System.out.println("Edited successfully!");
         run(scanner, currentUser);
@@ -84,6 +89,8 @@ public class UserMenu extends Menu {
         article.setBrief(scanner.nextLine());
         System.out.println("Please enter content: ");
         article.setContent(scanner.nextLine());
+        System.out.println("Please set a price: ");
+        article.setPrice(new BigDecimal(scanner.nextLine()));
         article.setCreateDate(LocalDate.now());
         System.out.println("Do you want to publish the article now? (y/n)");
         char publishOrNot = scanner.nextLine().charAt(0);
