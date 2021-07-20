@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ArticleRepository implements BaseRepository {
+
     public ArrayList<Article> getPublishedArticles() {
         ArrayList<Article> publishedArticles = new ArrayList<Article>();
         try {
@@ -49,7 +50,7 @@ public class ArticleRepository implements BaseRepository {
         ArrayList<Article> articles = new ArrayList<Article>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "select * from articles where user_id = ?"
+                    "select * from articles join categories on articles.category_id = categories.id where user_id = ?"
             );
             preparedStatement.setInt(1, currentUser.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -64,6 +65,12 @@ public class ArticleRepository implements BaseRepository {
                 articles.get(i).setPublished(resultSet.getBoolean(6));
                 articles.get(i).setLastUpdateDate(resultSet.getDate(7) != null ? resultSet.getDate(7).toLocalDate() : null);
                 articles.get(i).setPublishDate(resultSet.getDate(8) != null ? resultSet.getDate(8).toLocalDate() : null);
+                articles.get(i).setPrice(resultSet.getBigDecimal(11));
+                articles.get(i).setCategory(new Category(
+                   resultSet.getInt(12),
+                   resultSet.getString(13),
+                   resultSet.getString(14)
+                ));
                 articles.get(i).setUser(currentUser);
                 i++;
             }
@@ -104,7 +111,7 @@ public class ArticleRepository implements BaseRepository {
         try {
             Statement statement = connection.createStatement();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update articles set title = ?, brief = ?, content = ?, isPublished = ?, lastUpdateDate = ?, publishDate = ? where user_id = ? and id = ?"
+                    "update articles set title = ?, brief = ?, content = ?, isPublished = ?, lastUpdateDate = ?, publishDate = ?, price = ? where user_id = ? and id = ?"
             );
             preparedStatement.setString(1, editedArticle.getTitle());
             preparedStatement.setString(2, editedArticle.getBrief());
@@ -114,6 +121,7 @@ public class ArticleRepository implements BaseRepository {
             preparedStatement.setDate(6, editedArticle.isPublished() ? Date.valueOf(editedArticle.getPublishDate()) : null);
             preparedStatement.setInt(7, currentUser.getId());
             preparedStatement.setInt(8, articleId);
+            preparedStatement.setBigDecimal(9, editedArticle.getPrice());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -124,7 +132,7 @@ public class ArticleRepository implements BaseRepository {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into articles (title, brief, content, createdate, isPublished, " +
-                            "lastUpdateDate, publishDate, user_id, category_id) values (?,?,?,?,?,?,?,?,?)"
+                            "lastUpdateDate, publishDate, user_id, category_id, price) values (?,?,?,?,?,?,?,?,?,?)"
             );
             preparedStatement.setString(1, article.getTitle());
             preparedStatement.setString(2, article.getBrief());
@@ -135,6 +143,7 @@ public class ArticleRepository implements BaseRepository {
             preparedStatement.setDate(7, article.getPublishDate() != null ? Date.valueOf(article.getPublishDate()) : null);
             preparedStatement.setInt(8, currentUser.getId());
             preparedStatement.setInt(9, article.getCategory().getId());
+            preparedStatement.setBigDecimal(10, article.getPrice());
             preparedStatement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
