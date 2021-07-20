@@ -20,6 +20,7 @@ public class UserRepository implements BaseRepository {
                         loginResult.getString(3),
                         loginResult.getDate(4).toLocalDate()
                 );
+                user.setBalance(loginResult.getBigDecimal(7));
                 return user;
             } else {
                 System.out.println("you don't have an account or your account is not active");
@@ -67,6 +68,32 @@ public class UserRepository implements BaseRepository {
             return false;
         }
 
+    }
+
+    public User getUserByName(String userName) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement
+                    ("select * from users where username = ?");
+            preparedStatement.setString(1, userName);
+            ResultSet loginResult = preparedStatement.executeQuery();
+            if (loginResult.next()){
+                User user = new User(
+                        loginResult.getInt(1),
+                        loginResult.getString(2),
+                        loginResult.getString(3),
+                        loginResult.getDate(4).toLocalDate()
+                );
+                user.setBalance(loginResult.getBigDecimal(7));
+                return user;
+            } else {
+                System.out.println("you don't have an account");
+                return null;
+            }
+        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+            System.out.println("you don't have an account");
+            return null;
+        }
     }
 
 

@@ -20,6 +20,7 @@ public class MainMenu extends Menu {
                 "Register",
                 "View Published Articles",
                 "Admin login",
+                "Charge account",
                 "Exit"
         });
     }
@@ -43,6 +44,7 @@ public class MainMenu extends Menu {
                 adminLogin(scanner);
                 break;
             case "5":
+                chargeAcount(scanner);
                 break;
             default:
                 System.out.println("Wrong!");
@@ -131,6 +133,18 @@ public class MainMenu extends Menu {
             System.out.println("Wrong!");
             adminLogin(scanner);
         }
+    }
+
+    private void chargeAcount(Scanner scanner) {
+        System.out.println("Enter username: ");
+        String userName = scanner.nextLine();
+        User user = new UserRepository().getUserByName(userName);
+        System.out.println("Enter amount you want to charge: ");
+        String addAmount = scanner.nextLine();
+        user.setBalance(user.getBalance().add(new BigDecimal(addAmount)));
+        new UserRepository().update(user);
+        System.out.println("your account charged successfully");
+        run(scanner);
     }
 
 }
