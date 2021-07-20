@@ -1,10 +1,10 @@
-package ir.maktab.hw1.controller;
+package ir.maktab.hw7.repository;
 
-import ir.maktab.hw1.model.User;
+import ir.maktab.hw7.domain.User;
 
 import java.sql.*;
 
-public class UserController extends Controller {
+public class UserRepository implements BaseRepository {
 
     public User getUser(String userName, String password) {
         try {
@@ -22,7 +22,7 @@ public class UserController extends Controller {
             );
             return user;
         } catch (SQLException throwables) {
-//            throwables.printStackTrace();
+            throwables.printStackTrace();
             return null;
         }
     }
@@ -46,7 +46,6 @@ public class UserController extends Controller {
 
     public boolean updatePass(User currentUser, String newPass) {
         try {
-            Statement statement = connection.createStatement();
             PreparedStatement preparedStatement = connection.prepareStatement
                     ("update users set password = ? where id = ?");
             preparedStatement.setString(1, newPass);

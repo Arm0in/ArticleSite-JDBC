@@ -1,16 +1,15 @@
-package ir.maktab.hw1.view;
+package ir.maktab.hw7.view;
 
-import ir.maktab.hw1.controller.ArticleController;
-import ir.maktab.hw1.controller.UserController;
-import ir.maktab.hw1.model.Article;
-import ir.maktab.hw1.model.Category;
-import ir.maktab.hw1.model.User;
+import ir.maktab.hw7.repository.ArticleRepository;
+import ir.maktab.hw7.repository.UserRepository;
+import ir.maktab.hw7.domain.Article;
+import ir.maktab.hw7.domain.Category;
+import ir.maktab.hw7.domain.User;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class UserMenu extends Menu {
-    ArticleController articleController = new ArticleController();
 
     public UserMenu() {
         super(new String[]{
@@ -53,8 +52,9 @@ public class UserMenu extends Menu {
     }
 
     private void viewArticles(User currentUser) {
+        ArticleRepository articleRepository = new ArticleRepository();
         for (Article article :
-                articleController.getUserArticles(currentUser)) {
+                articleRepository.getUserArticles(currentUser)) {
             System.out.println(article);
         }
     }
@@ -69,7 +69,7 @@ public class UserMenu extends Menu {
         editedArticle.setBrief(scanner.nextLine());
         System.out.println("Please enter new content: ");
         editedArticle.setContent(scanner.nextLine());
-        new ArticleController().updateArticle(currentUser, articleId, editedArticle);
+        new ArticleRepository().update(currentUser, articleId, editedArticle);
         System.out.println("Edited successfully!");
         run(scanner, currentUser);
     }
@@ -99,7 +99,7 @@ public class UserMenu extends Menu {
         article.setCategory(category);
         article.setTags(new TagMenu().chooseTags(scanner));
         System.out.println(article);
-        new ArticleController().addArticle(currentUser, article);
+        new ArticleRepository().save(currentUser, article);
         System.out.println("Added successfully!");
         run(scanner, currentUser);
     }
@@ -107,7 +107,7 @@ public class UserMenu extends Menu {
     private void changePublish(User currentUser, Scanner scanner) {
         System.out.println("Enter article Id: ");
         int articleId = Integer.parseInt(scanner.nextLine());
-        Article article = new ArticleController().getArticleById(currentUser, articleId);
+        Article article = new ArticleRepository().getArticleById(currentUser, articleId);
         System.out.println(article);
         if (article.isPublished()) {
             System.out.println("do you want to unpublish your article? (y/n)");
@@ -130,13 +130,13 @@ public class UserMenu extends Menu {
                 run(scanner, currentUser);
             }
         }
-        new ArticleController().updateArticle(currentUser, articleId, article);
+        new ArticleRepository().update(currentUser, articleId, article);
     }
 
     private void changePassword(User currentUser, Scanner scanner) {
         System.out.println("Enter your new password");
         String newPassword = scanner.nextLine();
-        new UserController().updatePass(currentUser, newPassword);
+        new UserRepository().updatePass(currentUser, newPassword);
         System.out.println("Password Updated successfully!");
         run(scanner, currentUser);
     }

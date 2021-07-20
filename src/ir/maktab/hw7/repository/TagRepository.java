@@ -1,8 +1,7 @@
-package ir.maktab.hw1.controller;
+package ir.maktab.hw7.repository;
 
-import ir.maktab.hw1.model.Article;
-import ir.maktab.hw1.model.Category;
-import ir.maktab.hw1.model.Tag;
+import ir.maktab.hw7.domain.Article;
+import ir.maktab.hw7.domain.Tag;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class TagController extends Controller {
+public class TagRepository implements BaseRepository {
 
     public ArrayList<Tag> getAllTags() {
         ArrayList<Tag> tags = new ArrayList<Tag>();

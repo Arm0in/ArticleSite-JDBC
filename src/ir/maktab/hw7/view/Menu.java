@@ -1,6 +1,4 @@
-package ir.maktab.hw1.view;
-
-import java.util.Scanner;
+package ir.maktab.hw7.view;
 
 public class Menu {
     private String[] menuItems;

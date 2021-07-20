@@ -1,5 +1,6 @@
-package ir.maktab.hw1.model;
+package ir.maktab.hw7.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class User {
@@ -8,6 +9,8 @@ public class User {
     private String nationalCode;
     private LocalDate birthday;
     private String password;
+    private boolean status;
+    private BigDecimal balance;
 
     public User() {
     }
@@ -26,6 +29,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", nationalCode='" + nationalCode + '\'' +
                 ", birthday=" + birthday +
+                ", balance=" + balance +
                 '}';
     }
 
@@ -67,5 +71,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }

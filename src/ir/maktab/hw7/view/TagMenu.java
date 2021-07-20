@@ -1,9 +1,7 @@
-package ir.maktab.hw1.view;
+package ir.maktab.hw7.view;
 
-import ir.maktab.hw1.controller.CategoryController;
-import ir.maktab.hw1.controller.TagController;
-import ir.maktab.hw1.model.Category;
-import ir.maktab.hw1.model.Tag;
+import ir.maktab.hw7.repository.TagRepository;
+import ir.maktab.hw7.domain.Tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,13 +10,13 @@ import java.util.Scanner;
 public class TagMenu extends Menu {
 
     private static String[] getTags() {
-        TagController tagController = new TagController();
-        String[] tags = new String[tagController.getAllTags().size() + 2];
-        for (int i = 0; i < tagController.getAllTags().size(); i++) {
-            tags[i] = tagController.getAllTags().get(i).getTitle();
+        TagRepository tagRepository = new TagRepository();
+        String[] tags = new String[tagRepository.getAllTags().size() + 2];
+        for (int i = 0; i < tagRepository.getAllTags().size(); i++) {
+            tags[i] = tagRepository.getAllTags().get(i).getTitle();
         }
-        tags[tagController.getAllTags().size()] = "Create new tag";
-        tags[tagController.getAllTags().size() + 1] = "Add tags";
+        tags[tagRepository.getAllTags().size()] = "Create new tag";
+        tags[tagRepository.getAllTags().size() + 1] = "Add tags";
         return tags;
     }
 
@@ -28,7 +26,7 @@ public class TagMenu extends Menu {
 
     public ArrayList<Tag> chooseTags(Scanner scanner) {
         showMenu();
-        ArrayList<Tag> tags = new TagController().getAllTags();
+        ArrayList<Tag> tags = new TagRepository().getAllTags();
         ArrayList<Tag> chosenTags = new ArrayList<Tag>();
         System.out.println("Choose tags: ");
         String chosenItem = scanner.nextLine();
@@ -48,7 +46,7 @@ public class TagMenu extends Menu {
         System.out.println("Please enter title: ");
         tag.setTitle(scanner.nextLine());
         try {
-            new TagController().addTag(tag);
+            new TagRepository().addTag(tag);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

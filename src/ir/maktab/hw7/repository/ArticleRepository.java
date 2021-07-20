@@ -1,14 +1,14 @@
-package ir.maktab.hw1.controller;
+package ir.maktab.hw7.repository;
 
-import ir.maktab.hw1.model.Article;
-import ir.maktab.hw1.model.Category;
-import ir.maktab.hw1.model.User;
+import ir.maktab.hw7.domain.Article;
+import ir.maktab.hw7.domain.Category;
+import ir.maktab.hw7.domain.User;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ArticleController extends Controller {
+public class ArticleRepository implements BaseRepository {
     public ArrayList<Article> getPublishedArticles() {
         ArrayList<Article> publishedArticles = new ArrayList<Article>();
         try {
@@ -102,27 +102,27 @@ public class ArticleController extends Controller {
         }
     }
 
-    public boolean updateArticle(User currentUser, int articleId, Article editedArticle) {
+    public void update(User currentUser, int articleId, Article editedArticle) {
         try {
             Statement statement = connection.createStatement();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update articles set title = ?, brief = ?, content = ?, lastUpdateDate = ? where user_id = ? and id = ?"
+                    "update articles set title = ?, brief = ?, content = ?, isPublished = ?, lastUpdateDate = ?, publishDate = ? where user_id = ? and id = ?"
             );
             preparedStatement.setString(1, editedArticle.getTitle());
             preparedStatement.setString(2, editedArticle.getBrief());
             preparedStatement.setString(3, editedArticle.getContent());
-            preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
-            preparedStatement.setInt(5, currentUser.getId());
-            preparedStatement.setInt(6, articleId);
+            preparedStatement.setBoolean(4, editedArticle.isPublished());
+            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+            preparedStatement.setDate(6, editedArticle.isPublished() ? Date.valueOf(editedArticle.getPublishDate()) : null);
+            preparedStatement.setInt(7, currentUser.getId());
+            preparedStatement.setInt(8, articleId);
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return false;
         }
     }
 
-    public boolean addArticle(User currentUser, Article article) {
+    public void save(User currentUser, Article article) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into articles (title, brief, content, createdate, isPublished, " +
@@ -138,10 +138,8 @@ public class ArticleController extends Controller {
             preparedStatement.setInt(8, currentUser.getId());
             preparedStatement.setInt(9, article.getCategory().getId());
             preparedStatement.executeUpdate();
-            return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            return false;
         }
 
     }
