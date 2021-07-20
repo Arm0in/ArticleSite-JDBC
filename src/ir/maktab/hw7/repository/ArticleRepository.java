@@ -13,32 +13,30 @@ public class ArticleRepository implements BaseRepository {
         ArrayList<Article> publishedArticles = new ArrayList<Article>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from articles " +
+            ResultSet resultSet = statement.executeQuery("select articles.*, users.username, categories.title from articles " +
                     "join users on articles.user_id = users.id join categories on articles.category_id = categories.id" +
                     " where isPublished = 1");
             while (resultSet.next()) {
-                publishedArticles.add(
-                        new Article(
-                                resultSet.getInt(1),
-                                resultSet.getString(2),
-                                resultSet.getString(3),
-                                resultSet.getString(4),
-                                resultSet.getDate(5).toLocalDate(),
-                                resultSet.getBoolean(6),
-                                resultSet.getDate(7).toLocalDate(),
-                                resultSet.getDate(8).toLocalDate(),
-                                new User(
-                                        resultSet.getInt(11),
-                                        resultSet.getString(12),
-                                        resultSet.getString(13),
-                                        resultSet.getDate(14).toLocalDate()),
-                                new Category(
-                                        resultSet.getInt(16),
-                                        resultSet.getString(17),
-                                        resultSet.getString(18)
-                                )
+                Article article = new Article(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getDate(5).toLocalDate(),
+                        resultSet.getBoolean(6),
+                        resultSet.getDate(7).toLocalDate(),
+                        resultSet.getDate(8).toLocalDate(),
+                        new User(
+                                resultSet.getInt(9),
+                                resultSet.getString(12)
+                        ),
+                        new Category(
+                                resultSet.getInt(10),
+                                resultSet.getString(13)
                         )
                 );
+                article.setPrice(resultSet.getBigDecimal(11));
+                publishedArticles.add(article);
             }
             return publishedArticles;
         } catch (SQLException throwables) {

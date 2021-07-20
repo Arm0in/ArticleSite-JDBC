@@ -15,6 +15,11 @@ public class User {
     public User() {
     }
 
+    public User(int id, String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
+
     public User(int id, String userName, String nationalCode, LocalDate birthday) {
         this.id = id;
         this.userName = userName;

@@ -48,7 +48,8 @@ public class Article {
                 ", lastUpdateDate=" + lastUpdateDate +
                 ", publishDate=" + publishDate +
                 ", User= " + user.getUserName() +
-                ", category=" + category +
+                ", category=" + category.getTitle() +
+                ", price=" + price +
                 '}';
     }
 

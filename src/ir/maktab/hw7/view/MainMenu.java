@@ -7,8 +7,10 @@ import ir.maktab.hw7.repository.UserRepository;
 import ir.maktab.hw7.domain.Article;
 import ir.maktab.hw7.domain.User;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainMenu extends Menu {
@@ -34,7 +36,7 @@ public class MainMenu extends Menu {
                 run(scanner);
                 break;
             case "3":
-                viewPublished();
+                viewPublished(scanner);
                 run(scanner);
                 break;
             case "4":
@@ -83,11 +85,35 @@ public class MainMenu extends Menu {
         System.out.println("Registered successfully!");
     }
 
-    private void viewPublished() {
-        ArticleRepository articleRepository = new ArticleRepository();
-        for (Article article :
-                articleRepository.getPublishedArticles()) {
-            System.out.println(article);
+    private void viewPublished(Scanner scanner) {
+        ArrayList<Article> articles = new ArticleRepository().getPublishedArticles();
+        ArrayList<Article> freeArticles = new ArrayList<Article>();
+        ArrayList<Article> paidArticles = new ArrayList<Article>();
+        for (int i = 0; i < articles.size(); i++) {
+            if (articles.get(i).getPrice().compareTo(BigDecimal.ZERO) == 0) {
+                freeArticles.add(articles.get(i));
+            } else {
+                paidArticles.add(articles.get(i));
+            }
+        }
+        System.out.println("1. Free articles \n2. Paid articles");
+        String chosenItem = scanner.nextLine();
+        switch (chosenItem) {
+            case "1":
+                for (Article a :
+                        freeArticles) {
+                    System.out.println(a);
+                }
+                break;
+            case "2":
+                for (Article a :
+                        paidArticles) {
+                    System.out.println(a);
+                }
+                break;
+            default:
+                System.out.println("wrong!");
+                run(scanner);
         }
     }
 
