@@ -1,5 +1,6 @@
 package ir.maktab.hw7.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Article {
     private User user;
     private Category category;
     private ArrayList<Tag> tags;
+    private BigDecimal price;
 
     public Article() {
     }
@@ -136,5 +138,13 @@ public class Article {
 
     public void setTags(ArrayList<Tag> tags) {
         this.tags = tags;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
