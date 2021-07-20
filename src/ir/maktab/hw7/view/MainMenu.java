@@ -60,7 +60,6 @@ public class MainMenu extends Menu {
             UserMenu userMenu = new UserMenu();
             userMenu.run(scanner, user);
         } else {
-            System.out.println("Wrong!");
             login(scanner);
         }
 
