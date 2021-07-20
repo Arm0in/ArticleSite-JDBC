@@ -143,7 +143,8 @@ public class UserMenu extends Menu {
     private void changePassword(User currentUser, Scanner scanner) {
         System.out.println("Enter your new password");
         String newPassword = scanner.nextLine();
-        new UserRepository().updatePass(currentUser, newPassword);
+        currentUser.setPassword(newPassword);
+        new UserRepository().update(currentUser);
         System.out.println("Password Updated successfully!");
         run(scanner, currentUser);
     }
