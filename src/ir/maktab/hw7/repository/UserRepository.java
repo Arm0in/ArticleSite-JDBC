@@ -49,12 +49,17 @@ public class UserRepository implements BaseRepository {
 
     }
 
-    public boolean updatePass(User currentUser, String newPass) {
+    public boolean update(User currentUser) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("update users set password = ? where id = ?");
-            preparedStatement.setString(1, newPass);
-            preparedStatement.setInt(2, currentUser.getId());
+                    ("update users set username = ?, nationalcode = ?, birthday = ?, password = ?, status = ?, balance = ? where id = ?");
+            preparedStatement.setString(1, currentUser.getUserName());
+            preparedStatement.setString(2, currentUser.getNationalCode());
+            preparedStatement.setDate(3, Date.valueOf(currentUser.getBirthday()));
+            preparedStatement.setString(4, currentUser.getPassword());
+            preparedStatement.setBoolean(5, currentUser.isStatus());
+            preparedStatement.setBigDecimal(6, currentUser.getBalance());
+            preparedStatement.setInt(7, currentUser.getId());
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException throwables) {
