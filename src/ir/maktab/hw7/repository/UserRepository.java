@@ -9,20 +9,25 @@ public class UserRepository implements BaseRepository {
     public User getUser(String userName, String password) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement
-                    ("select * from users where username = ? and password = ?");
+                    ("select * from users where username = ? and password = ? and status = 1");
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, password);
             ResultSet loginResult = preparedStatement.executeQuery();
-            loginResult.next();
-            User user = new User(
-                    loginResult.getInt(1),
-                    loginResult.getString(2),
-                    loginResult.getString(3),
-                    loginResult.getDate(4).toLocalDate()
-            );
-            return user;
+            if (loginResult.next()){
+                User user = new User(
+                        loginResult.getInt(1),
+                        loginResult.getString(2),
+                        loginResult.getString(3),
+                        loginResult.getDate(4).toLocalDate()
+                );
+                return user;
+            } else {
+                System.out.println("you don't have an account or your account is not active");
+                return null;
+            }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+//            throwables.printStackTrace();
+            System.out.println("you don't have an account or your account is not active");
             return null;
         }
     }
